@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+RUN apk add --no-cache bash curl
+
 COPY release/windows/amd64/blackduck-plugin.exe C:/blackduck-plugin.exe
 
 ENTRYPOINT ["C:/blackduck-plugin.exe"]

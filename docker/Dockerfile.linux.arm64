@@ -1,5 +1,7 @@
 FROM alpine:latest
 
+RUN apk add --no-cache bash curl
+
 COPY release/linux/arm64/blackduck-plugin /bin/
 
 ENTRYPOINT ["/bin/blackduck-plugin"]
