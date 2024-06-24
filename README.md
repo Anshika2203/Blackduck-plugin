@@ -26,11 +26,12 @@ The plugin `anshikaanand/blackduck-plugin` is available for the following archit
 
 ## Parameters
 
-| Parameter                                                                | Comments                                                                                                                           |
-|:-------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| BlackduckURL <span style="font-size: 10px"><br/>`required`</span>        | The URL of the Black Duck server. |
-| BlackduckToken <span style="font-size: 10px"><br/>`required`</span>      | The API token for accessing the Black Duck server.                                                              |
-| BLackduckProperties <span style="font-size: 10px"><br/>`optional`</span> | Additional properties to pass to the Synopsys Detect script.                                                      |
+| Parameter                                                                | Comments                                                     |
+|:-------------------------------------------------------------------------|--------------------------------------------------------------|
+| BlackduckURL <span style="font-size: 10px"><br/>`required`</span>        | The URL of the Black Duck server.                            |
+| BlackduckToken <span style="font-size: 10px"><br/>`required`</span>      | The API token for accessing the Black Duck server.           |
+| BlackduckProject  <span style="font-size: 10px"><br/>`required`</span>   | The name of the project in Blackduck.                        |
+| BLackduckProperties <span style="font-size: 10px"><br/>`optional`</span> | Additional properties to pass to the Synopsys Detect script. |
 
 
 ## Building
@@ -47,6 +48,7 @@ Build the plugin image:
 docker run --rm \
     -e PLUGIN_BLACKDUCK_URL="$PLUGIN_BLACKDUCK_URL" \
     -e PLUGIN_BLACKDUCK_TOKEN="$PLUGIN_BLACKDUCK_TOKEN" \
+    -e PLUGIN_BLACKDUCK_PROJECT="$PLUGIN_BLACKDUCK_PROJECT" \
     -e PLUGIN_PROPERTIES="$PLUGIN_PROPERTIES" \
     blackduck-plugin
 
@@ -61,6 +63,10 @@ docker run --rm \
     spec:
         connectorRef: harness-docker-connector
         image: anshikaanand/blackduck-plugin:linux-arm64
+        settings:
+            blackduck_url: https://abcd.blackduck.com/
+            blackduck_token: some_token
+            blackduck_project: test
        
 
 - step:
@@ -70,4 +76,7 @@ docker run --rm \
     spec:
         connectorRef: harness-docker-connector
         image: anshikaanand/blackduck-plugin:linux-amd64
-        
+        settings:
+            blackduck_url: https://abcd.blackduck.com/
+            blackduck_token: some_token
+            blackduck_project: test
