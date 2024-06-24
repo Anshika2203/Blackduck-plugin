@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-RUN apk add --no-cache bash curl
+RUN apk add --no-cache bash curl openjdk11-jre
 
 COPY release/windows/amd64/blackduck-plugin.exe C:/blackduck-plugin.exe
 
