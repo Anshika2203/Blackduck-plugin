@@ -1,0 +1,5 @@
+FROM alpine:latest
+
+COPY release/linux/arm64/blackduck-plugin /bin/
+
+ENTRYPOINT ["/bin/blackduck-plugin"]

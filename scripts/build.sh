@@ -10,8 +10,8 @@ set -e
 set -x
 
 # linux
-GOOS=linux GOARCH=amd64 go build -o release/linux/amd64/Blackduck-plugin
-GOOS=linux GOARCH=arm64 go build -o release/linux/arm64/Blackduck-plugin
+GOOS=linux GOARCH=amd64 go build -o release/linux/amd64/blackduck-plugin
+GOOS=linux GOARCH=arm64 go build -o release/linux/arm64/blackduck-plugin
 
 # windows
-GOOS=windows go build -o release/windows/amd64/Blackduck-plugin.exe
+GOOS=windows go build -o release/windows/amd64/blackduck-plugin.exe
