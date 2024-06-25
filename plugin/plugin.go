@@ -7,16 +7,24 @@ package plugin
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
+	"strconv"
 )
 
 type Plugin struct {
-	BlackduckURL        string `envconfig:"PLUGIN_BLACKDUCK_URL"`
-	BlackduckToken      string `envconfig:"PLUGIN_BLACKDUCK_TOKEN"`
-	BlackduckProject    string `envconfig:"PLUGIN_BLACKDUCK_PROJECT"`
-	BLackduckProperties string `envconfig:"PLUGIN_BLACKDUCK_PROPERTIES"`
-	LogLevel            string `envconfig:"PLUGIN_LOG_LEVEL"`
+	BlackduckURL            string `envconfig:"PLUGIN_BLACKDUCK_URL"`
+	BlackduckToken          string `envconfig:"PLUGIN_BLACKDUCK_TOKEN"`
+	BlackduckProject        string `envconfig:"PLUGIN_BLACKDUCK_PROJECT"`
+	BlackduckOfflineMode    bool   `envconfig:"PLUGIN_BLACKDUCK_OFFLINEMODE"`
+	BlackduckTestConnection bool   `envconfig:"PLUGIN_BLACKDUCK_TEST_CONNECTION"`
+	BlackduckOfflineBDIO    bool   `envconfig:"PLUGIN_BLACKDUCK_OFFLINE_BDIO"`
+	BlackduckTrustCerts     bool   `envconfig:"PLUGIN_BLACKDUCK_TRUST_CERTS"`
+	BlackduckTimeout        int    `envconfig:"PLUGIN_BLACKDUCK_TIMEOUT"`
+	BlackduckScanMode       string `envconfig:"PLUGIN_BLACKDUCK_SCAN_MODE"`
+	BLackduckProperties     string `envconfig:"PLUGIN_BLACKDUCK_PROPERTIES"`
+	LogLevel                string `envconfig:"PLUGIN_LOG_LEVEL"`
 }
 
 func (p *Plugin) Exec(ctx context.Context) error {
@@ -31,16 +39,49 @@ func runBlackDuckScan(p *Plugin) error {
 	bdURL := p.BlackduckURL
 	bdToken := p.BlackduckToken
 	bdProject := p.BlackduckProject
-	moreProperties := p.BLackduckProperties
 
-	if bdURL == "" || bdToken == "" {
-		return fmt.Errorf("BLACKDUCK_URL and BLACKDUCK_TOKEN environment variables must be set")
+	if bdURL == "" || bdToken == "" || bdProject == "" {
+		return fmt.Errorf("BLACKDUCK_URL, BLACKDUCK_TOKEN and BLACKDUCK_PROJECT environment variables must be set")
 	}
 
 	command := fmt.Sprintf("bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\" --blackduck.trust.cert=true", bdURL, bdToken, bdProject)
 
-	if moreProperties != "" {
-		command += " " + moreProperties
+	if strconv.FormatBool(p.BlackduckOfflineMode) != "" {
+		command += " --blackduck.offline.mode=" + strconv.FormatBool(p.BlackduckOfflineMode)
+	}
+
+	if strconv.FormatBool(p.BlackduckTestConnection) != "" {
+		command += " --detect.test.connection=" + strconv.FormatBool(p.BlackduckTestConnection)
+	}
+
+	if strconv.FormatBool(p.BlackduckOfflineBDIO) != "" {
+		command += " --blackduck.offline.mode.force.bdio=" + strconv.FormatBool(p.BlackduckOfflineBDIO)
+	}
+
+	if strconv.FormatBool(p.BlackduckTrustCerts) != "" {
+		command += " --blackduck.trust.cert=" + strconv.FormatBool(p.BlackduckTrustCerts)
+	}
+
+	if strconv.Itoa(p.BlackduckTimeout) != "" {
+		command += " --detect.timeout=" + strconv.Itoa(p.BlackduckTimeout)
+	}
+
+	// RAPID,STATELESS,INTELLIGENT
+	if p.BlackduckScanMode != "" {
+		switch p.BlackduckScanMode {
+		case "RAPID":
+			command += " --detect.blackduck.scan.mode=RAPID"
+		case "STATELESS":
+			command += " --detect.blackduck.scan.mode=STATELESS"
+		case "INTELLIGENT":
+			command += " --detect.blackduck.scan.mode=INTELLIGENT"
+		default:
+			log.Printf("Unexpected BlackduckScanMode: %s \n Scan mode can be RAPID, STATELESS, INTELLIGENT.", p.BlackduckScanMode)
+		}
+	}
+
+	if p.BLackduckProperties != "" {
+		command += " " + p.BLackduckProperties
 	}
 
 	cmd := exec.Command("bash", "-c", command)
