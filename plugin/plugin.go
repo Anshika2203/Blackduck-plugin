@@ -44,7 +44,7 @@ func runBlackDuckScan(p *Plugin) error {
 		return fmt.Errorf("BLACKDUCK_URL, BLACKDUCK_TOKEN and BLACKDUCK_PROJECT environment variables must be set")
 	}
 
-	command := fmt.Sprintf("bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\" --blackduck.trust.cert=true", bdURL, bdToken, bdProject)
+	command := fmt.Sprintf("bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\"", bdURL, bdToken, bdProject)
 
 	if strconv.FormatBool(p.BlackduckOfflineMode) != "" {
 		command += " --blackduck.offline.mode=" + strconv.FormatBool(p.BlackduckOfflineMode)

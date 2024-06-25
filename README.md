@@ -37,7 +37,7 @@ The plugin `anshikaanand/blackduck-plugin` is available for the following archit
 | blackduck_trust_certs <span style="font-size: 10px"><br/>`optional` `bool`</span>     | If true, automatically trust the certificate for the current run of Detect only.                                                                                                                     |
 | blackduck_timeout <span style="font-size: 10px"><br/>`optional` `int`</span>          | The amount of time in seconds Detect will wait for network connection, for scans to finish, and to generate reports.                                                                                 |
 | blackduck_scan_mode <span style="font-size: 10px"><br/>`optional`</span>              | Set the Black Duck scanning mode of Detect. Acceptable Values: RAPID, STATELESS, INTELLIGENT.                                                                                                        |
-| BLackduckProperties <span style="font-size: 10px"><br/>`optional`</span>              | Additional properties to pass to the Synopsys Detect script.                                                                                                                                         |
+| bLackduck_properties <span style="font-size: 10px"><br/>`optional`</span>             | Additional properties to pass to the Synopsys Detect script.                                                                                                                                         |
 
 
 ## Building
@@ -56,7 +56,7 @@ docker run --rm \
     -e PLUGIN_BLACKDUCK_TOKEN="$PLUGIN_BLACKDUCK_TOKEN" \
     -e PLUGIN_BLACKDUCK_PROJECT="$PLUGIN_BLACKDUCK_PROJECT" \
     -e PLUGIN_PROPERTIES="$PLUGIN_PROPERTIES" \
-    blackduck-plugin
+    synopsys-detect
 
 ```
 
@@ -77,8 +77,8 @@ docker run --rm \
 
 - step:
     type: Plugin
-    name: blackduck-plugin-amd64
-    identifier: blackduck-plugin-amd64
+    name: synopsys-detect-plugin-amd64
+    identifier: synopsys-detect-plugin-amd64
     spec:
         connectorRef: harness-docker-connector
         image: harnesscommunitytest/synopsys-detect:linux-amd64
