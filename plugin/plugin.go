@@ -46,35 +46,31 @@ func runBlackDuckScan(p *Plugin) error {
 
 	command := fmt.Sprintf("bash <(curl -s -L https://detect.synopsys.com/detect9.sh) --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\"", bdURL, bdToken, bdProject)
 
-	if strconv.FormatBool(p.BlackduckOfflineMode) != "" {
+	if p.BlackduckOfflineMode {
 		command += " --blackduck.offline.mode=" + strconv.FormatBool(p.BlackduckOfflineMode)
 	}
 
-	if strconv.FormatBool(p.BlackduckTestConnection) != "" {
+	if p.BlackduckTestConnection {
 		command += " --detect.test.connection=" + strconv.FormatBool(p.BlackduckTestConnection)
 	}
 
-	if strconv.FormatBool(p.BlackduckOfflineBDIO) != "" {
+	if p.BlackduckOfflineBDIO {
 		command += " --blackduck.offline.mode.force.bdio=" + strconv.FormatBool(p.BlackduckOfflineBDIO)
 	}
 
-	if strconv.FormatBool(p.BlackduckTrustCerts) != "" {
+	if p.BlackduckTrustCerts {
 		command += " --blackduck.trust.cert=" + strconv.FormatBool(p.BlackduckTrustCerts)
 	}
 
-	if strconv.Itoa(p.BlackduckTimeout) != "" {
+	if p.BlackduckTimeout > 0 {
 		command += " --detect.timeout=" + strconv.Itoa(p.BlackduckTimeout)
 	}
 
 	// RAPID,STATELESS,INTELLIGENT
 	if p.BlackduckScanMode != "" {
 		switch p.BlackduckScanMode {
-		case "RAPID":
-			command += " --detect.blackduck.scan.mode=RAPID"
-		case "STATELESS":
-			command += " --detect.blackduck.scan.mode=STATELESS"
-		case "INTELLIGENT":
-			command += " --detect.blackduck.scan.mode=INTELLIGENT"
+		case "RAPID", "STATELESS", "INTELLIGENT":
+			command += " --detect.blackduck.scan.mode=" + p.BlackduckScanMode
 		default:
 			log.Printf("Unexpected BlackduckScanMode: %s \n Scan mode can be RAPID, STATELESS, INTELLIGENT.", p.BlackduckScanMode)
 		}
