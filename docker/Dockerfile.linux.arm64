@@ -2,7 +2,7 @@ FROM alpine:latest
 
 RUN apk add --no-cache bash curl openjdk11-jre
 
-COPY download_detect.sh /opt/
+COPY scripts/download_detect.sh /opt/
 
 RUN chmod +x /opt/download_detect.sh
 
