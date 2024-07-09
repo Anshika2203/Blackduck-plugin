@@ -4,10 +4,10 @@ USER ContainerAdministrator
 
 ENV GODEBUG=netdns=go
 
-COPY scripts/download_detect.ps1 C:\opt\
+COPY scripts/download_detect.ps1 C:\\opt\\
 
-RUN powershell -File C:\opt\download_detect.ps1
+RUN powershell -File C:\\opt\\download_detect.ps1
 
-COPY release/windows/amd64/blackduck-plugin.exe C:\bin\
+COPY release/windows/amd64/blackduck-plugin.exe C:\\bin\\
 
 ENTRYPOINT ["C:\\bin\\blackduck-plugin.exe"]
