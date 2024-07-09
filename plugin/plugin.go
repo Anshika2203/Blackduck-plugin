@@ -10,6 +10,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"runtime"
 	"strconv"
 )
 
@@ -44,7 +45,12 @@ func runBlackDuckScan(p *Plugin) error {
 		return fmt.Errorf("BLACKDUCK_URL, BLACKDUCK_TOKEN and BLACKDUCK_PROJECT environment variables must be set")
 	}
 
-	command := fmt.Sprintf("java -jar /opt/jar/synopsys-detect-9.7.0.jar --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\"", bdURL, bdToken, bdProject)
+	var command string
+	if runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64" {
+		command = fmt.Sprintf("java -jar /opt/jar/synopsys-detect-9.7.0.jar --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\"", bdURL, bdToken, bdProject)
+	} else {
+		command = fmt.Sprintf("C:\\opt\\jar\\synopsys-detect-9.7.0.jar --blackduck.url=\"%s\" --blackduck.api.token=\"%s\" --detect.project.name=\"%s\"", bdURL, bdToken, bdProject)
+	}
 
 	if p.BlackduckOfflineMode {
 		command += " --blackduck.offline.mode=" + strconv.FormatBool(p.BlackduckOfflineMode)
@@ -80,7 +86,12 @@ func runBlackDuckScan(p *Plugin) error {
 		command += " " + p.BLackduckProperties
 	}
 
-	cmd := exec.Command("bash", "-c", command)
+	var cmd *exec.Cmd
+	if runtime.GOARCH == "amd64" || runtime.GOARCH == "arm64" {
+		cmd = exec.Command("bash", "-c", command)
+	} else {
+		cmd = exec.Command("cmd", "/C", command)
+	}
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 
