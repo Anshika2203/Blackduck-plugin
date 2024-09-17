@@ -1,4 +1,4 @@
-image: harnesscommunitytest/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}{{else}}latest{{/if}}
+image: plugins/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}{{else}}latest{{/if}}
 {{#if build.tags}}
 tags:
 {{#each build.tags}}
@@ -7,19 +7,13 @@ tags:
 {{/if}}
 manifests:
   -
-    image: harnesscommunitytest/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}-{{/if}}linux-amd64
+    image: plugins/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}-{{/if}}linux-amd64
     platform:
       architecture: amd64
       os: linux
   -
-    image: harnesscommunitytest/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}-{{/if}}linux-arm64
+    image: plugins/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}-{{/if}}linux-arm64
     platform:
       variant: v8
       architecture: arm64
       os: linux
-  -
-    image: harnesscommunitytest/synopsys-detect:{{#if build.tag}}{{trimPrefix "v" build.tag}}-{{/if}}windows-amd64
-    platform:
-      architecture: amd64
-      os: windows
-      version: ltsc2022
