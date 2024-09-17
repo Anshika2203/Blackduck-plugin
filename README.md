@@ -14,7 +14,7 @@ This repository contains a plugin for running Synopsys Detect or Black Duck scan
 
 ## Plugin Image
 
-The plugin `anshikaanand/blackduck-plugin` is available for the following architectures:
+The plugin `plugins/synopsys-detect` is available for the following architectures:
 
 | OS            | Tag                 |
 |---------------|---------------------|
@@ -56,7 +56,7 @@ docker run --rm \
     -e PLUGIN_BLACKDUCK_TOKEN="$PLUGIN_BLACKDUCK_TOKEN" \
     -e PLUGIN_BLACKDUCK_PROJECT="$PLUGIN_BLACKDUCK_PROJECT" \
     -e PLUGIN_PROPERTIES="$PLUGIN_PROPERTIES" \
-    synopsys-detect
+    plugins/synopsys-detect
 
 ```
 
@@ -68,7 +68,7 @@ docker run --rm \
     identifier: synopsys-detect-plugin-arm64
     spec:
         connectorRef: harness-docker-connector
-        image: harnesscommunitytest/synopsys-detect:linux-arm64
+        image: plugins/synopsys-detect
         settings:
             blackduck_url: https://abcd.blackduck.com/
             blackduck_token: some_token
@@ -81,7 +81,7 @@ docker run --rm \
     identifier: synopsys-detect-plugin-amd64
     spec:
         connectorRef: harness-docker-connector
-        image: harnesscommunitytest/synopsys-detect:linux-amd64
+        image: plugins/synopsys-detect
         settings:
             blackduck_url: https://abcd.blackduck.com/
             blackduck_token: some_token
